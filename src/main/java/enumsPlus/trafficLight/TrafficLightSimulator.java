@@ -36,6 +36,7 @@ public class TrafficLightSimulator implements Runnable{
     }
 
     public synchronized void changeColor(){
+
         switch (tlc){
             case RED:
                 tlc = TrafficLightColor.GREEN;
@@ -52,10 +53,12 @@ public class TrafficLightSimulator implements Runnable{
     }
 
     public synchronized void waitForChange(){
+
         try{
             while(!changed){
                 wait();
                 changed = false;
+
             }
         }catch (InterruptedException exc){
             System.out.println(Thread.currentThread().getName() + " interrupted");
@@ -76,9 +79,11 @@ public class TrafficLightSimulator implements Runnable{
         Thread thread = new Thread(trafficLight);
         thread.start();
 
-        for(int i =0; i < 9; i++){
+        for(int i = 0; i < 9; i++){
             System.out.println(trafficLight.getColor());
+            //System.out.println(Thread.currentThread().getName());
             trafficLight.waitForChange();
+            System.out.println(i);
         }
         trafficLight.cancel();
     }
