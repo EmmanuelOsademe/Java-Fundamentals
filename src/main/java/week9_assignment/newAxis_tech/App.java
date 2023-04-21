@@ -9,24 +9,29 @@ public class App {
     Scanner sc = new Scanner(System.in);
     ArrayList<User> users = new ArrayList<>();
 
+    public static void main(String[] args){
+        new App().run();
+    }
+
     public void createUserDetails(){
         System.out.print("Enter your name: ");
         String name = sc.next();
 
-        System.out.print("Enter your age");
+        System.out.print("Enter your age: ");
         int age = validateAge(sc.next());
 
         System.out.print("Enter your phone number(eg: 8033333333): ");
         String phoneNumber = validatePhoneNumber(sc.next());
 
         System.out.print("Enter your email address: ");
-        String email = sc.next();
+        String email = validateEmail(sc.next());
 
         System.out.print("Enter your house address: ");
+        sc.nextLine();
         String address = sc.nextLine();
+        System.out.println(address);
 
-        User newUser = new User(name, age, new ContactDetails(phoneNumber, email, address));
-        users.add(newUser);
+        users.add(new User(name, age, new ContactDetails(phoneNumber, email, address)));
         System.out.println("Your details have been saved");
     }
 
@@ -83,25 +88,24 @@ public class App {
     }
 
     public int validateAge(String input){
-        Pattern agePattern = Pattern.compile("[25-55]");
+        Pattern agePattern = Pattern.compile("([2-4][0-9])|5[0-5]");
         Matcher ageMatcher = agePattern.matcher(input);
 
         try{
-            if(ageMatcher.matches()){
-                return Integer.parseInt(input);
-            }else{
+            if(!ageMatcher.matches()){
                 throw new InvalidAgeException();
+            }else{
+                return Integer.parseInt(input);
             }
         }catch(InvalidAgeException exc){
-            System.out.println(exc.toString());
-            System.out.println("Expected numbers between 20 and 55");
+            System.out.println(exc);
             System.out.print("Make another entry: ");
             return validateAge(sc.next());
         }
     }
 
     public String validatePhoneNumber(String input){
-        Pattern phonePattern = Pattern.compile("^\\d{10}");
+        Pattern phonePattern = Pattern.compile("[7-9][0-1][0-9]{8}");
         Matcher phoneMatcher = phonePattern.matcher(input);
         if(phoneMatcher.matches()){
             return input;
@@ -111,7 +115,15 @@ public class App {
         }
     }
 
-    public static void main(String[] args){
-        new App().run();
+    public String validateEmail(String input){
+        Pattern emailPattern = Pattern.compile("[A-Za-z0-9_.-]{5,20}@[a-z.]{3,20}");
+        Matcher emailMatcher = emailPattern.matcher(input);
+
+        if(!emailMatcher.matches()){
+            System.out.print("Invalid email format entered. Please try again (eg: john.doe@abc.com): ");
+            return validateEmail(sc.next());
+        }
+
+        return input;
     }
 }
