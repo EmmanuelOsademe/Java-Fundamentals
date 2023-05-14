@@ -10,7 +10,6 @@ public class Main {
         try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
 
             while((line = br.readLine()) != null){
-                System.out.println(line);
                 String[] strs = line.split(" ");
                 for(String word: strs){
                     if(word.equalsIgnoreCase(searchWord)){
@@ -22,10 +21,10 @@ public class Main {
             System.out.println("I/O Exception occurred: " + e);
             e.printStackTrace();
         }
-        return (counter + " occurrences of " + searchWord + " were found");
+        return (counter + " occurrences of '" + searchWord + "' were found");
     }
 
     public static void main(String[] args){
-       System.out.println(wordsCounter("books.txt", "the"));
+       System.out.println(wordsCounter("test.txt", "hello"));
     }
 }

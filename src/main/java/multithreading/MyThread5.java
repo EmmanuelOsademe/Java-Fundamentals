@@ -4,6 +4,7 @@ public class MyThread5 implements Runnable{
     Thread thread;
 
     public  MyThread5(String threadName){
+
         thread = new Thread(this, threadName);
     }
 
